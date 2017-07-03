@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+	
+   <package id="7zip"
+         name="7-Zip"
+         revision="1"
+         reboot="false"
+         priority="201"
+		 public="1">
+
+		<check type="uninstall" condition="exists" path="7-Zip 17.00" />
+		<check type="uninstall" condition="exists" path="7-Zip 17.00 (x64 edition)" 	architecture="x64" />		 
+		 
+		<variable name="installerPath64" value="7zip\7z1700-x64.msi" />
+		<variable name="installerPath" value="7zip\7z1700.msi"/>
+<!-- 		<variable name="installerURL" value="http://downloads.sourceforge.net/sevenzip/7z920-x64.msi" architecture="x64"/>
+		<variable name="installerURL" value="http://downloads.sourceforge.net/sevenzip/7z920.msi" architecture="x86"/> -->
+		<!-- <variable name="installerURL64" 	value="%FTP_SOFTWARE%/7zip/7z920-x64.msi" />
+		<variable name="installerURL" 		value="%FTP_SOFTWARE%/7zip/7z920.msi" />   -->		
+		<variable name="installerURL64" 	value="http://7-zip.org/a/7z1700-x64.msi" />
+		<variable name="installerURL" 		value="http://7-zip.org/a/7z1700.msi" />		
+	
+		<install cmd='"downloader.cmd" 	"%installerURL%"	"%SOFTWARE%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition> 
+		</install>
+		<install cmd='"downloader.cmd" 	"%installerURL64%"	"%SOFTWARE%\%installerPath64%"  >NUL' architecture="x64">
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath64%" /></check></condition> 
+		</install>
+		
+		<install cmd='msiexec /qn /norestart /i "%SOFTWARE%\%installerPath64%"' 	architecture="x64" />
+		<install cmd='msiexec /qn /norestart /i "%SOFTWARE%\%installerPath%"' />
+	   
+		<upgrade include="install" />
+		<remove cmd='msiexec /qn /x{23170F69-40C1-2701-0920-000001000000}' 	/>
+		<remove cmd='msiexec /x "%SOFTWARE%\7zip\7z1700-x64.msi" /qn' 		architecture="x64"/>
+   </package>
+  
+   <!--
+	<package id="7zip-x64"
+         name="7-Zip x64"
+         revision="920"
+         reboot="false"
+         priority="201">
+       <check type="uninstall" condition="exists" path="7-Zip 9.20 (x64 edition)" />
+       <install cmd='msiexec /qn /norestart /i %SOFTWARE%\7zip\7z920-x64.msi' />
+       <upgrade cmd='msiexec /qn /norestart /i %SOFTWARE%\7zip\7z920-x64.msi' />
+       <remove cmd='msiexec /x "%SOFTWARE%\7zip\7z920-x64.msi" /qn' />
+	</package> 
+	-->
+
+</packages:packages>

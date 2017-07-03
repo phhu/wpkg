@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Database of packages which are ready to be assigned to workstations. Assign
+	these packages by adding them to profiles which you associate with
+	workstations.
+
+	THIS IS A SAMPLE FILE.
+
+	More individual application package examples can be found here:
+		packages/
+
+	Templates for typical use-cases can be found at:
+		packages/Templates/
+
+	For detailed documentation on the XML structure, attributes etc it's
+	recommended to have a look at the XSD schema included here:
+		xsd/
+
+	An automatically generated documentation of the XML structure is included
+	here:
+		documents/
+	Just open documents/index.html in your favorite web browser.
+
+	For help on silent installation switches please refer to the WPKG wiki:
+		<http://wpkg.org/Category:Silent_Installers>
+
+	More documentation is available on the WPKG web-page as well:
+		<http://wpkg.org/Category:Documentation>
+-->
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages xsd/packages.xsd">
+
+	<!--
+		Packages need to specify an "id" and a "name" at least.
+		The ID has to be unique and is used to refer to the package in profiles.
+	-->
+	<package id="wpkg1" name="Windows Packager sample 1" revision="1"
+		reboot="false" priority="0">
+
+		<!--
+			Checks are used by WPKG to verify whether a package is correctly
+			installed on the target system.
+			In this case the package will verify the existence of s registry
+			entry, a file and an uninstall entry. 
+
+			After successfully executing the commands (see below) WPKG will
+			execute all	checks. If any of them returns false value WPKG will
+			report an error and retry installation on next run.
+
+			Also note that it is not required to specify many checks. Often
+			it is sufficient to check for an uninstall value.
+		-->
+		<check type="registry" condition="exists"
+			path="HKLM\Software\wpkg\full\key\not\part\of\it" />
+		<check type="file" condition="exists" path="C:\wpkg\wpkg.bat" />
+		<check type="uninstall" condition="exists" path="WPKG 0.6-test1" />
+
+		<commands>
+			<!--
+				When the package is assigned to the host for the first time
+				(initial installation) then the install commands are executed.
+				The command is launched exactly as specified. In this case the
+				exit code 0 is marked as being successful. Actually this is
+				implicitly assumed by WPKG. Exit codes other than 0 are
+				regarded as errors.
+				Exit code 3010 however will trigger an immediate reboot (even
+				before continuing to next command). Use this with caution since
+				during next run WPKG will start over and execute the command
+				again (hopefully it does then not exit with code 3010 again).
+			-->
+			<command include="test" type="install" cmd='msiexec /i /qn "%SOFTWARE%\path\to\msi"'>
+				<exit code="0" />
+				<exit code="3010" reboot="true" />
+				<exit code='any' />
+				<exit code="2" />
+			</command>
+
+			<!--
+				When the package is removed from the profile assigned to a host
+				which already has the package installed, then WPKG will execute
+				the remove command(s).
+			-->
+			<command type="remove" cmd='msiexec /x /qn "%SOFTWARE%\path\to\msi"' />
+
+			<!--
+				When the package revision attribute is incremented WPKG will
+				execute the upgrade command(s) on hosts which already have a
+				previous revision installed.
+			-->
+			<command type="upgrade" cmd='msiexec /i /qn "%SOFTWARE%\path\to\msi"' />
+
+			<!--
+				When a package revision attribute is decremented WPKG will
+				execute the downgrade command(s) on hosts which already have a
+				newer revision installed.
+				In this case the downgrade is achieved by uninstalling the
+				software and re-installing it. In order not having to repeat
+				the commands they are simply included. Of course it would also
+				be possible to specify both commands here directly.
+			-->
+			<command type="downgrade" include="remove" />
+			<command type="downgrade" include="install" />
+		</commands>
+	</package>
+
+
+
+	<!--
+		Just another package example with id 'wpkg2'
+	-->
+	<package id="wpkg2" name="Windows Packager sample 2" revision="1"
+		reboot="false" priority="0">
+
+		<!--
+			A package can depend on other package. WPKG will make sure the
+			package referenced is installed before it continues to install this
+			package.
+		-->
+		<depends package-id="some-library" />
+
+		<!--
+			This package does not feature any checks. So WPKG will have to
+			"assume" its correct installation by the exit code of the
+			installation command. WPKG will also be unable to detect if the
+			software package is still correctly installed (e.g. not uninstalled
+			by the user).
+		-->
+		<commands>
+			<!--
+				This package comes with an installation command only. During
+				upgrade or remove WPKG will not perform any action.
+			-->
+			<command type="install" cmd='\\server\path\script.bat' />
+		</commands>
+	</package>
+
+
+
+	<!--
+		One more sample package with id 'wpkg3'.
+		It uses higher priority than the other packages and therefore is
+		executed earlier during WPKG run.
+		Please note that it's recommended to specify dependencies rather than
+		priorities to assure package installation order.
+	-->
+	<package id="wpkg3" name="Windows Packager sample 3" revision="1"
+		reboot="false" priority="1">
+
+		<!--
+			WPKG will check whether "Sample Package Software 1.6" exists in
+			Control Panel -> Add/Remove software.
+		-->
+		<check type="uninstall" condition="exists" path="Sample Package Software 1.6" />
+
+		<commands>
+			<command type="install" cmd='%SOFTWARE%\package.exe /quiet /install'>
+				<exit code="10" />
+			</command>
+			<command type="remove" cmd='%SOFTWARE%\package.exe /quiet /uninstall' />
+			<command type="upgrade" cmd='%SOFTWARE%\package.exe /quiet /upgrade' />
+		</commands>
+	</package>
+
+
+	<!--
+		A special package which is enforcing time synchronization using a time
+		server.
+		It's using the notify attribute to disable notifications about package
+		execution. It also uses execute="always" attribute which instructs WPKG
+		to re-run the commands even if the package is already installed.
+	-->
+	<package id="time" name="Time Synchronization" revision="1"
+		reboot="false" priority="100" notify="false" execute="always">
+
+		<commands>
+			<!--
+				Due to execute="always" this command will be run on each WPKG execution
+			-->
+			<command type="install" cmd="net time \\timeserver /set /yes" />
+		</commands>
+	</package>
+
+</packages:packages>
