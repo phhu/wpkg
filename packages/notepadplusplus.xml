@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+	<package
+	  id="NotepadPlusPlus"
+	  name="Notepad++"
+	  revision="1.%version%"
+	  reboot="false"
+	  priority="200"
+	  public="1">
+	 
+	  <variable name="version" value="7.4.2" />
+
+	  <check type="uninstall" condition="versiongreaterorequal" path="Notepad\+\+.*" value="%version%" />	  
+	  
+	  <chain package-id="NotepadPlusPlusXMLToolsExtLibs" />
+	  <chain package-id="NotepadPlusPlusXMLToolsPlugin" />
+	  
+		<variable name="installerPath" value="notepad++\npp.%version%.Installer.exe"/>
+		<variable name="installerURL" value="http://download.tuxfamily.org/notepadplus/%version%/npp.%version%.Installer.exe" />
+
+		<install cmd='"downloader.cmd" 	"%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>
+	 
+	  <!-- remove plug-ins to prevent installer hanging -->
+	  <!-- Exit code of "1" can occur if there are no .dll files in the plugins dir. This happens if a previous installation has been uninstalled,
+		 since the uninstaller fails to remove the plugins folder. -->
+	  <!-- gup.exe is deleted to disable the auto-updater -->
+	  
+	  <install cmd="taskkill /F /IM notepad++.exe">		<exit code="any" />	  </install>
+	  <install cmd='%ComSpec% /c if exist "%PROGFILES32%\Notepad++\plugins" del /f /q "%PROGFILES32%\Notepad++\plugins\*.dll"' ><exit code="1"/></install>
+	  <install cmd="%SOFTWARE%\Notepad++\npp.%version%.Installer.exe /S" />
+	  <install cmd='%COMSPEC% /c del "%PROGFILES32%\Notepad++\updater\gup.exe"'	/>
+	  
+	  <upgrade include="install"  />
+	  
+	  <remove cmd='%ComSpec% /c if exist "%PROGFILES32%\Notepad++\plugins" del /f /q "%PROGFILES32%\Notepad++\plugins\*.dll"' ><exit code="1"/></remove>
+	  <remove cmd='"%PROGFILES32%\Notepad++\uninstall.exe" /S' />
+	  <remove cmd='%ComSpec% /c timeout 2' ><exit code="any"/> </remove>
+	</package>
+
+    <package
+        id="NotepadPlusPlusXMLToolsExtLibs"
+        name="Notepad++ XML Tools Plugin External Libraries"
+        revision="3"
+        reboot="false"
+        priority="202">
+ 
+        <depends package-id="NotepadPlusPlus" />
+	
+		<!-- need to check that each file exists. Can use sizes if versions matter -->
+        <check type="file" condition="sizeequals"   path="%PROGFILES32%\Notepad++\libxml2.dll" value="987136" />
+		<check type="file" condition="sizeequals"   path="%PROGFILES32%\Notepad++\libcurl.dll" value="367104" />
+		<check type="file" condition="exists" 		path="%PROGFILES32%\Notepad++\libiconv-2.dll"  />
+		<check type="file" condition="exists" 		path="%PROGFILES32%\Notepad++\libwinpthread-1.dll"  />
+		<check type="file" condition="exists" 		path="%PROGFILES32%\Notepad++\libxml2-2.dll"  />
+		<check type="file" condition="exists" 		path="%PROGFILES32%\Notepad++\libxslt-1.dll"  />
+		<check type="file" condition="exists" 		path="%PROGFILES32%\Notepad++\zlib1.dll"  />
+
+		<install cmd="taskkill /F /IM notepad++.exe">		<exit code="any" />	  </install> 
+        <install cmd='%ComSpec% /c if exist "%PROGFILES32%\Notepad++" copy /b /y "%SOFTWARE%\Notepad++\plugins\ext_libs\*.dll" "%PROGFILES32%\Notepad++"' />
+        		
+        <upgrade include="install" />
+ 
+ 		<remove cmd="taskkill /F /IM notepad++.exe">		<exit code="any" />	  </remove> 
+		<!-- remove dll files manually - exit code 2 means file not found -->
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\iconv.dll"' >				<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libcurl.dll"' >			<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libiconv-2.dll"' >		<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libiconv-2.dll"' >		<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libwinpthread-1.dll"'>	<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libxml2.dll"' >			<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libxml2-2.dll"' >			<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libxslt.dll"' >			<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\libxslt-1.dll"' >			<exit code="2" />	</remove>
+        <remove cmd='%ComSpec% /c  del /f /q "%PROGFILES32%\Notepad++\zlib1.dll"' >				<exit code="2" />	</remove>
+    </package>
+ 
+    <package
+        id="NotepadPlusPlusXMLToolsPlugin"
+        name="Notepad++ Plugins"
+        revision="2"
+        reboot="false"
+        priority="202">
+ 
+        <depends package-id="NotepadPlusPlusXMLToolsExtLibs" />
+        <depends package-id="NotepadPlusPlus" />
+ 
+		<!-- it should be sufficient just to add a check here to get new extensions installed -->
+        <check type="file" condition="versiongreaterorequal" path="%PROGFILES32%\Notepad++\plugins\XMLTools.dll" 			value="1.0.0.1" />
+        <check type="file" condition="versiongreaterorequal" path="%PROGFILES32%\Notepad++\plugins\NppTextFX.dll" 			value="0.2.6.0" />
+        <check type="file" condition="versiongreaterorequal" path="%PROGFILES32%\Notepad++\plugins\ComparePlugin.dll" 		value="1.5.6.0" />
+        <check type="file" condition="versiongreaterorequal" path="%PROGFILES32%\Notepad++\plugins\LocationNavigate.dll" 	value="0.4.7.7" />
+ 
+		<!-- disused plugins -->
+		<!--<check type="file" condition="versiongreaterorequal" path="%PROGFILES32%\Notepad++\plugins\WindowManager.dll" 	value="1.2.2.0" />-->
+        <!--<check type="file" condition="versiongreaterorequal" path="%PROGFILES32%\Notepad++\plugins\PoorMansTSQLFormatterNppPlugin.dll" 	value="1.5.1.30381" />-->
+		
+		<!-- copy the xml plugin over - now in plug in dir so not needed 
+        <install cmd='%ComSpec% /c if exist "%PROGFILES32%\Notepad++\plugins" copy /b /v /y "%SOFTWARE%\Notepad++\XMLTools\XMLTools.dll" "%PROGFILES32%\Notepad++\plugins"' />
+		-->
+		
+		<!-- install any DLLs in the plugins dir -->
+		<install cmd='%ComSpec% /c copy /y /b /v "%SOFTWARE%\Notepad++\plugins\*.dll" "%PROGFILES32%\Notepad++\plugins\"' />	
+		
+        <upgrade include="install" />
+		<remove cmd="taskkill /F /IM notepad++.exe">		<exit code="any" />	  </remove> 
+        <remove cmd='%ComSpec% /c if exist "%PROGFILES32%\Notepad++\plugins" del /f /q "%PROGFILES32%\Notepad++\plugins\*.dll"' />
+		
+    </package>	
+	
+
+</packages:packages>
