@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+
+	<package
+		id="keepass"
+		name="KeePass"
+		revision="%version%.1"
+		reboot="false"
+		priority="25">
+ 
+		<variable name="version" value="2.36" />
+ 
+		<variable name="PKG_EXE"            value="KeePass-%version%-Setup.exe" />
+		<variable name="PKG_DESTINATION"    value="%PROGFILES32%\KeePass Password Safe 2"      />
+ 
+		<variable name="installerPath" value="keepass\KeePass-%version%-Setup.exe"/>
+		<variable name="installerURL" value="https://downloads.sourceforge.net/project/keepass/KeePass%202.x/%version%/KeePass-%version%-Setup.exe?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fkeepass%2F%3Fsource%3Dtyp_redirect&amp;use_mirror=kent" />
+
+		<check    type="uninstall"   condition="exists"   path="KeePass Password Safe %version%" />
+
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>	 
+  
+		<install cmd='taskkill /f /im KeePass.exe'>		  <exit code='any' />		</install>	
+		<install cmd='%COMSPEC% /c if exist "%PKG_DESTINATION%\KeePass.exe" --exit-all' >
+			<exit code='any' />
+		</install>
+		<install cmd='"%SOFTWARE%\%installerPath%" /sp- /silent /norestart'  /> 
+	
+		<!-- install extensions -->
+		<install cmd='%COMSPEC% /c copy /y "%SOFTWARE%\keepass\*.lngx" "%PKG_DESTINATION%\"' >
+			<exit code='any' />
+		</install>			
+		<install cmd='%COMSPEC% /c copy /y "%SOFTWARE%\keepass\*.plgx" "%PKG_DESTINATION%\"' >
+			<exit code='any' />
+		</install> 
+		<upgrade include="install" />
+
+		<remove cmd='"%PKG_DESTINATION%\uninstall.exe" /sp- /silent /norestart' />		
+
+	</package>	
+	
+	
+</packages:packages>
+
+
+

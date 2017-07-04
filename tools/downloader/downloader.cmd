@@ -74,7 +74,7 @@ set RETRY_COUNTER=1
 :: Disable certificate verification (not recommended)
 :: set DOWNLOADER_DEFAULT_OPTIONS_WEB=-q -N --no-check-certificate
 :: Default:
-set DOWNLOADER_DEFAULT_OPTIONS_WEB=-q -N
+set DOWNLOADER_DEFAULT_OPTIONS_WEB=-q -N --no-check-certificate
 
 :: Default options passed to UNC downloader.
 set DOWNLOADER_DEFAULT_OPTIONS_UNC=/LOG:%TEMP%\robocopy.log /NP
