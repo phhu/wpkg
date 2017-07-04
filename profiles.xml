@@ -30,8 +30,8 @@
 		Default set of software to be assigned to all hosts.
 	-->
 	<profile id="default">
-		<package package-id="firefox" />
-		<package package-id="thunderbird" />
+		<package package-id="notepad++" />
+		<package package-id="7zip" />
 	</profile>
 
 	<!--

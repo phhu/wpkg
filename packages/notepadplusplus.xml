@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
 
 	<package
-	  id="NotepadPlusPlus"
+	  id="notepad++"
 	  name="Notepad++"
 	  revision="1.%version%"
 	  reboot="false"
