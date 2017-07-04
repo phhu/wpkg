@@ -11,7 +11,6 @@
         reboot="false"
         priority="1">
 		
-		
 		<variable name="version" value="1.0.0" />
 		
 		<check type="uninstall" condition="versiongreaterorequal" path="name" value="%version%" />
@@ -24,7 +23,8 @@
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
 		</install>		
 		
-		<install cmd='%comspec% /c "%SOFTWARE%\%installerPath%" /qn ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		<install cmd='"%SOFTWARE%\%installerPath%" /qn ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		<!-- %PROGFILES32% can be used for 32 bit program files on 32 or 64 bit OS -->
 		
 		<upgrade include="install" />
 		
