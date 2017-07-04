@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+ 	<package
+        id="classicshell"
+        name="Classic Shell"
+        revision="2.%version%"
+        reboot="false"
+        priority="500">
+
+		
+        <variable name="version" value="4.3.0" />
+		<variable name="version_file" value="4_3_0" />
+		
+		<check type="uninstall" condition="versiongreaterorequal" path="Classic Shell" value="%version%" />
+
+		<variable name="installerPath" value="classicShell\ClassicShellSetup_%version_file%.exe"/>
+		<variable name="installerURL" value="http://www.mediafire.com/download/dbbil746gavpirr/ClassicShellSetup_%version_file%.exe" />
+
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%" "%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>
+		
+		<install cmd='%comspec% /c "%SOFTWARE%\%installerPath%" /qn ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		
+		<upgrade include="install" />
+		
+		<remove cmd='MsiExec.exe /X{840C85B7-D3D6-4143-9AF9-DAE80FD54CFC} /passive /norestart /qn' /> 	
+		
+		<!-- v 3.8.1 was {B2C8E389-C05C-4F27-8DF3-3D04EF6DD00E} 
+		v 4.1.0 {840C85B7-D3D6-4143-9AF9-DAE80FD54CFC}
+		-->
+  	</package>	
+	
+	
+</packages:packages>

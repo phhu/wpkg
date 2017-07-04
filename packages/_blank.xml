@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+ 	<package
+        id=""
+        name=""
+        revision="1.%version%"
+        reboot="false"
+        priority="1">
+		
+		
+		<variable name="version" value="1.0.0" />
+		
+		<check type="uninstall" condition="versiongreaterorequal" path="name" value="%version%" />
+		
+		<variable name="installerPath" value="name\name.%version%.Installer.exe"/>
+		<variable name="installerURL" value="https://someserver/%version%/name.%version%.Installer.exe" />
+
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>		
+		
+		<install cmd='%comspec% /c "%SOFTWARE%\%installerPath%" /qn ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		
+		<upgrade include="install" />
+		
+		<remove cmd='MsiExec.exe /X{somecode} /passive /norestart /qn' /> 	
+  	</package>	
+	
+	
+</packages:packages>
