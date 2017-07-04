@@ -16,18 +16,14 @@
 		<check type="uninstall" condition="exists" path="7-Zip 17.00 (x64 edition)" 	architecture="x64" />		 
 		 
 		<variable name="installerPath64" value="7zip\7z1700-x64.msi" />
-		<variable name="installerPath" value="7zip\7z1700.msi"/>
-<!-- 		<variable name="installerURL" value="http://downloads.sourceforge.net/sevenzip/7z920-x64.msi" architecture="x64"/>
-		<variable name="installerURL" value="http://downloads.sourceforge.net/sevenzip/7z920.msi" architecture="x86"/> -->
-		<!-- <variable name="installerURL64" 	value="%FTP_SOFTWARE%/7zip/7z920-x64.msi" />
-		<variable name="installerURL" 		value="%FTP_SOFTWARE%/7zip/7z920.msi" />   -->		
+		<variable name="installerPath"   value="7zip\7z1700.msi"/>
 		<variable name="installerURL64" 	value="http://7-zip.org/a/7z1700-x64.msi" />
 		<variable name="installerURL" 		value="http://7-zip.org/a/7z1700.msi" />		
 	
-		<install cmd='"downloader.cmd" 	"%installerURL%"	"%SOFTWARE%\%installerPath%"  >NUL'>
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%" "%SOFTWARE%\%installerPath%"  >NUL'>
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition> 
 		</install>
-		<install cmd='"downloader.cmd" 	"%installerURL64%"	"%SOFTWARE%\%installerPath64%"  >NUL' architecture="x64">
+		<install cmd='"%DOWNLOADERPATH%" 	"%installerURL64%"	"%SOFTWARE%\%installerPath64%"  >NUL' architecture="x64">
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath64%" /></check></condition> 
 		</install>
 		

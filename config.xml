@@ -730,6 +730,8 @@
 		
 			<variable name="SOFTWARE" value="software" 		hostname="^.*"	 	/>	
 
+			<variable name="DOWNLOADERPATH" value="tools\downloader\downloader.cmd" 		hostname="^.*"	 	/>	
+			
 			<!-- progfiles variable -->
 			<!-- this can be used to simplify commands for installing 32 bit applications, as the paths will work on both 32 bit and 64 bit Windows -->
 			<variable  name="PROGFILES32" value="%programfiles(x86)%" architecture="x64" />	

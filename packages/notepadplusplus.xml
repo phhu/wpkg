@@ -20,9 +20,9 @@
 	  <chain package-id="NotepadPlusPlusXMLToolsPlugin" />
 	  
 		<variable name="installerPath" value="notepad++\npp.%version%.Installer.exe"/>
-		<variable name="installerURL" value="http://download.tuxfamily.org/notepadplus/%version%/npp.%version%.Installer.exe" />
+		<variable name="installerURL" value="https://notepad-plus-plus.org/repository/7.x/%version%/npp.%version%.Installer.exe" />
 
-		<install cmd='"downloader.cmd" 	"%installerURL%"	"%software%\%installerPath%"  >NUL'>
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
 		</install>
 	 
