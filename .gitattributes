@@ -1,1 +1,5 @@
-* eol=crlf
+*.exe binary
+*.msi binary
+*.dll binary
+*.png binary
+*.xml eol=crlf
