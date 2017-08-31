@@ -30,15 +30,14 @@ setlocal EnableExtensions EnableDelayedExpansion
 :: Contributors:
 :: David Petterson <david@ifm.liu.se>
 :: :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: modified to use curl rather than wget, which is unreliable
+
 
 
 :: Set location where to find required tools.
 set TOOLS_PATH=%~dp0
 
 :: Path to web downloader tool (wget).
-::set DOWNLOADER_TOOL_WEB=%TOOLS_PATH%wget.exe
-set DOWNLOADER_TOOL_WEB=%TOOLS_PATH%curl.exe
+set DOWNLOADER_TOOL_WEB=%TOOLS_PATH%wget.exe
 
 :: Path to UNC/file copy tool (robocopy).
 :: Default (Client with Robocopy already installed):
@@ -75,8 +74,7 @@ set RETRY_COUNTER=1
 :: Disable certificate verification (not recommended)
 :: set DOWNLOADER_DEFAULT_OPTIONS_WEB=-q -N --no-check-certificate
 :: Default:
-:: set DOWNLOADER_DEFAULT_OPTIONS_WEB=-q -N --no-check-certificate
-set DOWNLOADER_DEFAULT_OPTIONS_WEB=--insecure --create-dirs --location
+set DOWNLOADER_DEFAULT_OPTIONS_WEB=-q -N --no-check-certificate
 
 :: Default options passed to UNC downloader.
 set DOWNLOADER_DEFAULT_OPTIONS_UNC=/LOG:%TEMP%\robocopy.log /NP
@@ -242,12 +240,10 @@ if "%DOWNLOADER_TOOL%" == "WGET" (
 		:: Clean eventually incomplete file.
 		if exist "%TARGET_FILE_PATH%%TARGET_FILE_NAME%" del /F /Q "%TARGET_FILE_PATH%%TARGET_FILE_NAME%"
 		:: For WEB downloads append options
-		::set DOWNLOADER_OPTIONS=-O "%TARGET_FILE_PATH%%TARGET_FILE_NAME%"
-		set DOWNLOADER_OPTIONS=--output "%TARGET_FILE_PATH%%TARGET_FILE_NAME%"
+		set DOWNLOADER_OPTIONS=-O "%TARGET_FILE_PATH%%TARGET_FILE_NAME%"
 	)
 	:: Build command line arguments.
-	:: --directory-prefix="%TARGET_FILE_PATH%\."
-	set DOWNLOADER_OPTIONS=!DOWNLOADER_OPTIONS! %DOWNLOADER_DEFAULT_OPTIONS_WEB% %DOWNLOADER_OPTIONS_WEB% "%DOWNLOAD_URL%"
+	set DOWNLOADER_OPTIONS=!DOWNLOADER_OPTIONS! %DOWNLOADER_DEFAULT_OPTIONS_WEB% %DOWNLOADER_OPTIONS_WEB% --directory-prefix="%TARGET_FILE_PATH%\." "%DOWNLOAD_URL%"
 ) else (
 	:: UNC download.
 	if "%DOWNLOAD_FILE%" == "" (
