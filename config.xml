@@ -736,7 +736,8 @@
 			<!-- this can be used to simplify commands for installing 32 bit applications, as the paths will work on both 32 bit and 64 bit Windows -->
 			<variable  name="PROGFILES32" value="%programfiles(x86)%" architecture="x64" />	
 			<variable  name="PROGFILES32" value="%programfiles%" architecture="x86" />	
-			
+			<variable  name="BITS3264" value="64" architecture="x64" />	
+			<variable  name="BITS3264" value="32" architecture="x86" />				
 	</variables>
 	<!--
 		****************************************************************************
