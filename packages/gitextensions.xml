@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+ 	<package
+        id="gitextensions"
+        name="gitextensions"
+        revision="1.%version%"
+        reboot="false"
+        priority="1">
+		
+		<variable name="version" value="2.50.01" />
+		
+		<check type="uninstall" condition="versiongreaterorequal" path="Git Extensions %version%" value="%version%" />
+		
+		<variable name="installerPath" value="gitextensions\GitExtensions-%version%-SetupComplete.msi"/>
+		<variable name="installerURL" value="https://github.com/gitextensions/gitextensions/releases/download/v%version%/GitExtensions-%version%-SetupComplete.msi" />
+	
+
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>		
+		
+		<install cmd='MsiExec.exe /i "%SOFTWARE%\%installerPath%" /qn ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		<!-- 
+			%PROGFILES32% can be used for 32 bit program files on 32 or 64 bit OS 
+			%BITS3264% returns 32 or 64 depending on OS bitage
+			or use architecture="x64" or architecture="x86" 
+		-->
+		
+		<upgrade include="install" />
+		
+		<remove cmd='MsiExec.exe /X{285D31A1-7A66-490E-B4EB-560E02725EB0} /passive /norestart /qn' /> 
+		<!-- see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
+		     and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall -->
+  	</package>	
+	
+</packages:packages>
