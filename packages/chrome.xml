@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!-- 
+    we use enterprise Chrome installer, which makes sane choices for most things
+    the installer will run successfully whilst Chrome is running, installing to new_chrome.exe
+    when the last running instance of Chrome exits, then:
+    chrome.exe is renamed to old_chrome.exe
+    new_chrome.exe is renamed to chrome.exe
+ 
+    chrome installer log is at
+    %temp%\chrome_installer.log
+-->
+ 
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+    xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.wpkg.org/packages xsd/packages.xsd">
+ 
+    <package 
+        id="chrome"
+        name="Google Chrome"
+        revision="%version%"
+        reboot="false"
+        priority="10">
+ 
+        <variable name="version" value="60.0.3112.113" />
+ 
+
+ 				<!-- 
+		call one of these then look in the dev tools / network to find the url for the actual download. Not sure how long it remains valid for, nor how it handles versions
+		there's also a 64 bit version...
+		https://enterprise.google.com/chrome/chrome-browser/thankyou.html?platform=win32msi
+		https://enterprise.google.com/chrome/chrome-browser/thankyou.html?platform=win64msi 
+		-->
+		<variable name="installerPath" value="chrome\GoogleChromeStandaloneEnterprise.msi"/>
+		<variable name="installerURL" value="https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B03FE9563-80F9-119F-DA3D-72FBBB94BC26%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable%26brand=GCEA/dl/chrome/install/googlechromestandaloneenterprise.msi" />
+
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>	
+ 
+        <!-- check the version no. to check the package state -->
+        <variable name="PKG_DESTINATION"      value="%PROGFILES32%\Google\Chrome\Application" />
+        <check type="logical" condition="or">
+            <check type="file" condition="versiongreaterorequal" path="%PKG_DESTINATION%\chrome.exe"     value="%version%" />
+            <check type="file" condition="versiongreaterorequal" path="%PKG_DESTINATION%\new_chrome.exe" value="%version%" />
+        </check> 
+ 
+        <!-- install the software, fails if .msi is renamed -->
+        <install cmd='msiexec /qn /norestart /i "%SOFTWARE%\%installerPath%"' />
+        <!-- remove the desktop icon -->
+        <install cmd='%COMSPEC% /c if exist "%public%\Desktop\Google Chrome.lnk" del "%public%\Desktop\Google Chrome.lnk"' />
+        <!-- turn off AutoUpdate -->
+        <install cmd='REG ADD HKLM\SOFTWARE\Policies\Google\Update /v AutoUpdateCheckPeriodMinutes /d 0 /f /t REG_DWORD' />
+ 
+        <upgrade include="install" />
+ 
+        <!-- kill chrome and all its buddies -->
+        <remove cmd="taskkill /F /IM chrome.exe"><exit code="any" /></remove>
+        <!-- this is sometimes slow, but works, and does not rely on the original installer being available -->
+        <remove cmd='wmic product where name="Google Chrome" call uninstall' />
+        <remove cmd='REG DELETE HKLM\SOFTWARE\Policies\Google\Update /v AutoUpdateCheckPeriodMinutes /f' />
+ 
+    </package>
+
+</packages:packages>
