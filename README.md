@@ -16,6 +16,7 @@ PS download
 -----------
 
 ```
+cd $env.temp
 $destpath = $pwd.path
 $zipfile = join-path $destpath "wpkg.zip"
 invoke-webrequest "https://github.com/phhu/wpkg/archive/master.zip" -outfile $zipfile
