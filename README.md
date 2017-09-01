@@ -13,7 +13,7 @@ cscript wpkg.js /install:7zip,classicshell,notepad++
 Software install files can be added to the software directory, and if the download location is specified in the package XML file, will be downloaded as needed.
 
 PS download
-===========
+-----------
 
 ```
 $destpath = $pwd.path
