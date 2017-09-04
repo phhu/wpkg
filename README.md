@@ -10,10 +10,14 @@ cscript wpkg.js /install:notepad++
 cscript wpkg.js /install:7zip,classicshell,notepad++
 ```
 
+Package names come from the XML files in the package directory
+
 Software install files can be added to the software directory, and if the download location is specified in the package XML file, will be downloaded as needed.
 
-PS download
------------
+Powershell download
+-------------------
+
+This will download this package, unzip it and run an installer. Run in Powershell as admin, including the first line to put in %temp%, and modifying the last line to choose packages
 
 ```
 cd $env.temp

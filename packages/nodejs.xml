@@ -37,9 +37,9 @@
 		<!-- 
 		<remove cmd='MsiExec.exe /X{C6D83D75-9B09-4DEA-A890-F700FD744DEA} /passive /norestart /qn' /> 
 		<remove cmd='WMIC product where name="Node.js" call uninstall' /> 
-			'
 			see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
-		     and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall -->
+		    and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall 
+		-->
   	</package>		
 	
 </packages:packages>
