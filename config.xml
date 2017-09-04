@@ -737,7 +737,9 @@
 			<variable  name="PROGFILES32" value="%programfiles(x86)%" architecture="x64" />	
 			<variable  name="PROGFILES32" value="%programfiles%" architecture="x86" />	
 			<variable  name="BITS3264" value="64" architecture="x64" />	
-			<variable  name="BITS3264" value="32" architecture="x86" />				
+			<variable  name="BITS3264" value="32" architecture="x86" />		
+			<variable  name="BITS8664" value="64" architecture="x64" />	
+			<variable  name="BITS8664" value="86" architecture="x86" />			
 	</variables>
 	<!--
 		****************************************************************************
