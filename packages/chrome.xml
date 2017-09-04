@@ -43,6 +43,7 @@
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
 		</install>	
  
+
         <!-- check the version no. to check the package state 
 		64 bit version seems to go in 32 bit prog files anyway
 		-->

@@ -29,5 +29,6 @@ $zip = $shell.NameSpace($zipfile)
 $shell.Namespace($destpath).copyhere($zip.items()[0])
 cd wpkg-master
 cscript wpkg.js /install:"classicshell,7zip,notepad++,chrome,git"
+echo done
 
 ```
