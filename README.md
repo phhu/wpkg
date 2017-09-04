@@ -20,7 +20,7 @@ Powershell download
 This will download this package, unzip it and run an installer. Run in Powershell as admin, including the first line to put in %temp%, and modifying the last line to choose packages
 
 ```
-cd $env.temp
+cd $env:temp
 $destpath = $pwd.path
 $zipfile = join-path $destpath "wpkg.zip"
 invoke-webrequest "https://github.com/phhu/wpkg/archive/master.zip" -outfile $zipfile
