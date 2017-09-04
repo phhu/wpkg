@@ -28,6 +28,6 @@ $shell = new-object -com shell.application
 $zip = $shell.NameSpace($zipfile)
 $shell.Namespace($destpath).copyhere($zip.items()[0])
 cd wpkg-master
-cscript wpkg.js /install:classicshell
+cscript wpkg.js /install:classicshell,7zip,notepad++,git,chrome
 
 ```
