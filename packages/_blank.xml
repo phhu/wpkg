@@ -33,9 +33,10 @@
 		-->
 		
 		<upgrade include="install" />
-		
-		<remove cmd='MsiExec.exe /X{somecode} /passive /norestart /qn' /> 
-		<!-- see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
+
+		<remove cmd='WMIC product where name="NAME" call uninstall' /> 
+		<!-- <remove cmd='MsiExec.exe /X{somecode} /passive /norestart /qn' />  
+ 		     see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
 		     and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall -->
   	</package>	
 	
