@@ -5,25 +5,25 @@
 	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
 
  	<package
-        id=""
-        name=""
+        id="nodejs"
+        name="Node.js"
         revision="1.%version%"
         reboot="false"
         priority="1">
 		
-		<variable name="version" value="1.0.0" />
+		<variable name="version" value="8.4.0" />
 		
-		<check type="uninstall" condition="versiongreaterorequal" path="name" value="%version%" />
+		<check type="uninstall" condition="versiongreaterorequal" path="Node.js" value="%version%" />
 		
-		<variable name="installerPath" value="name\name.%version%.Installer.exe"/>
-		<variable name="installerURL" value="https://someserver/%version%/name.%version%.Installer.exe" />
+		<variable name="installerPath" value="nodejs\node-v%version%-x%BITS8664%.msi"/>
+		<variable name="installerURL" value="https://nodejs.org/dist/v%version%/node-v%version%-x%BITS8664%.msi" />
 
 		<!-- conditional download -->
 		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
 		</install>		
 		
-		<install cmd='MsiExec.exe /i"%SOFTWARE%\%installerPath%" /qn  /norestart ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		<install cmd='MsiExec.exe /i"%SOFTWARE%\%installerPath%" /qn /norestart ALLUSERS=1 '  />   <!-- os=".*6\.[234]\.\d{4}" -->
 		<!-- 
 			%PROGFILES32% can be used for 32 bit program files on 32 or 64 bit OS 
 			%BITS3264% returns 32 or 64 depending on OS bitage
@@ -33,9 +33,9 @@
 		
 		<upgrade include="install" />
 		
-		<remove cmd='MsiExec.exe /X{somecode} /passive /norestart /qn' /> 
+		<remove cmd='MsiExec.exe /X{C6D83D75-9B09-4DEA-A890-F700FD744DEA} /passive /norestart /qn' /> 
 		<!-- see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
 		     and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall -->
-  	</package>	
+  	</package>		
 	
 </packages:packages>
