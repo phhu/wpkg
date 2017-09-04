@@ -739,7 +739,9 @@
 			<variable  name="BITS3264" value="64" architecture="x64" />	
 			<variable  name="BITS3264" value="32" architecture="x86" />		
 			<variable  name="BITS8664" value="64" architecture="x64" />	
-			<variable  name="BITS8664" value="86" architecture="x86" />			
+			<variable  name="BITS8664" value="86" architecture="x86" />		
+			<variable  name="BITS_64" value="64" architecture="x64" />	
+			<variable  name="BITS_64" value="" architecture="x86" />				
 	</variables>
 	<!--
 		****************************************************************************

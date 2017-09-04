@@ -31,16 +31,20 @@
 		https://enterprise.google.com/chrome/chrome-browser/thankyou.html?platform=win32msi
 		https://enterprise.google.com/chrome/chrome-browser/thankyou.html?platform=win64msi 
 		-->
-		<variable name="installerPath" value="chrome\GoogleChromeStandaloneEnterprise.msi"/>
-		<variable name="installerURL" value="https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B03FE9563-80F9-119F-DA3D-72FBBB94BC26%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable%26brand=GCEA/dl/chrome/install/googlechromestandaloneenterprise.msi" />
+		<variable name="installerPath" value="chrome\GoogleChromeStandaloneEnterprise%BITS_64%.msi"/>
+		<variable name="installerURL" value="https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B03FE9563-80F9-119F-DA3D-72FBBB94BC26%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable%26brand=GCEA/dl/chrome/install/googlechromestandaloneenterprise%BITS_64%.msi" />
 
+		<!-- https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7B03FE9563-80F9-119F-DA3D-72FBBB94BC26%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable%26brand=GCEA/dl/chrome/install/googlechromestandaloneenterprise64.msi?_ga=2.167456766.1941032337.1504532519-46135493.1504259171
+		
+		-->
+		
 		<!-- conditional download -->
 		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
 		</install>	
  
         <!-- check the version no. to check the package state -->
-        <variable name="PKG_DESTINATION"      value="%PROGFILES32%\Google\Chrome\Application" />
+        <variable name="PKG_DESTINATION"      value="%PROGRAMFILES%\Google\Chrome\Application" />
         <check type="logical" condition="or">
             <check type="file" condition="versiongreaterorequal" path="%PKG_DESTINATION%\chrome.exe"     value="%version%" />
             <check type="file" condition="versiongreaterorequal" path="%PKG_DESTINATION%\new_chrome.exe" value="%version%" />

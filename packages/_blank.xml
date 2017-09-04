@@ -28,6 +28,7 @@
 			%PROGFILES32% can be used for 32 bit program files on 32 or 64 bit OS (i.e. Program files / Program files (x86) )
 			%BITS3264% returns 32 or 64 depending on OS bitage
 			%BITS8664% returns 86 or 64 depending on OS bitage
+			%BITS_64% similarly returns nothing or 64
 			or use architecture="x64" or architecture="x86" 
 		-->
 		
