@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+ 	<package
+        id="ssrsreportbuilder"
+        name="SSRS report builder"
+        revision="1.%version%"
+        reboot="false"
+        priority="1">
+		
+		<variable name="version" value="12.0.2000.8" />
+		
+		<check type="uninstall" condition="versiongreaterorequal" path="SQL Server Report Builder 3 for SQL Server 2014" value="%version%" />
+		
+		<!-- download page is https://www.microsoft.com/en-gb/download/details.aspx?id=42301 -->
+		<variable name="installerPath" value="ssrsreportbuilder\ReportBuilder3.msi"/>
+		<variable name="installerURL" value="https://download.microsoft.com/download/2/E/1/2E1C4993-7B72-46A4-93FF-3C3DFBB2CEE0/ENU/x86/ReportBuilder3.msi" />
+
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>		
+		
+		<install cmd='MsiExec.exe /i"%SOFTWARE%\%installerPath%" /qn  /norestart ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		<!-- 
+			%PROGFILES32% can be used for 32 bit program files on 32 or 64 bit OS (i.e. Program files / Program files (x86) )
+			%BITS3264% returns 32 or 64 depending on OS bitage
+			%BITS8664% returns 86 or 64 depending on OS bitage
+			%BITS_64% similarly returns nothing or 64
+			or use architecture="x64" or architecture="x86" 
+		-->
+		
+		<upgrade include="install" />
+		
+		<remove cmd='MsiExec.exe /X{35D2D56F-52DD-4463-95B4-A73FE6FA7C28} /passive /norestart /qn' />
+		<!-- 
+		<remove cmd='WMIC product where name="SQL Server Report Builder 3 for SQL Server 2014" call uninstall' /> 
+		<remove cmd='MsiExec.exe /X{35D2D56F-52DD-4463-95B4-A73FE6FA7C28} /passive /norestart /qn' />  
+ 		     see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
+		     and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall -->
+  	</package>	
+	
+</packages:packages>
