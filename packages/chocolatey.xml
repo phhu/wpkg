@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+ 	<package
+        id="chocolatey"
+        name="Chocolatey"
+        revision="1.%version%"
+        reboot="false"
+        priority="1">
+		
+		<variable name="version" value="0.10.5.0" />
+
+		<check type="file" condition="exists" path='%programdata%\chocolatey\bin\chocolatey.exe' value="%version%" />
+		
+		<variable name="installerPath" value="chocolatey\install.ps1"/>
+		<variable name="installerURL" value="https://chocolatey.org/install.ps1" />
+
+		<!-- standard variables - usually in config.xml -->
+		<variable name="SOFTWARE" value="software" 		/>	
+		<variable name="DOWNLOADERPATH" value="tools\downloader\downloader.cmd"  />  
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>		
+		
+		<install cmd='powershell "%SOFTWARE%\%installerPath%"'  /> 
+		<!--
+		<install cmd='choco install 7zip -y'  /> 
+		<install cmd='choco install 7zip -y - -forceX86 - -force' architecture="x64" /> 
+		-->
+		
+		<upgrade include="install" />
+
+		<remove cmd='cmd /c rmdir /s /q "%programdata%\chocolatey\"' /> 
+
+  	</package>	
+	
+</packages:packages>
