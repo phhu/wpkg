@@ -25,8 +25,8 @@
 		
 		<install cmd='powershell "%SOFTWARE%\%installerPath%"'  /> 
 		<!--
-		<install cmd='choco install 7zip -y'  /> 
-		<install cmd='choco install 7zip -y - -forceX86 - -force' architecture="x64" /> 
+		<install cmd='cmd /c choco install 7zip -y'  /> 
+		<install cmd='cmd /c choco install 7zip -y - -forceX86 - -force' architecture="x64" /> 
 		-->
 		
 		<upgrade include="install" />
