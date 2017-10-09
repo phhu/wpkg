@@ -18,9 +18,6 @@
 		<variable name="installerPath" value="chocolatey\install.ps1"/>
 		<variable name="installerURL" value="https://chocolatey.org/install.ps1" />
 
-		<!-- standard variables - usually in config.xml -->
-		<variable name="SOFTWARE" value="software" 		/>	
-		<variable name="DOWNLOADERPATH" value="tools\downloader\downloader.cmd"  />  
 		<!-- conditional download -->
 		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
 			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
