@@ -32,22 +32,34 @@
   	</package>	
 	
 	<package
-        id="vlc"
-        name="VideoLAN Client (using Chocolatey)"
-        revision="1.%version%"
+        id="chocobasic"
+        name="Basic packages (using Chocolatey)"
+        revision="1"
         reboot="false"
         priority="1">
 
-		<depends package-id="chocolatey" />
+		<depends package-id="chocolatey" /> 
+	
+		<!-- can use more than one:
+			<variable name="PKGNAMES" value="vlc firefox nssm" />
+		-->	
+		<variable name="PKGNAMES" value="classic-shell notepadplusplus git googlechrome 7zip" />
 		
-		<variable name="version" value="2.2.6" />
-		<variable name="PKGNAME" value="vlc" />
+		<check path='Classic Shell' 	value='4.3.0' 			type='uninstall' condition='versiongreaterorequal' />
+		<check path='Git version .*' 	value='2.13.2' 			type='uninstall' condition='versiongreaterorequal' />
+		<check path='Google Chrome' 	value='61.0.3163.100' 	type='uninstall' condition='versiongreaterorequal' />
+		<check path='7-Zip .*' 			value='16.04' 			type='uninstall' condition='versiongreaterorequal' />
+		<check path='Notepad\+\+.*' 	value='7.5.1' 			type='uninstall' condition='versiongreaterorequal' />
+	    <!--
+		Or use choco list in a .cmd file like this:
+			choco list - -localonly | findstr /ib /c:%1
+			exit %ERRORLEVEL%
+		<check type="execute" path='chocotest.cmd "%PKGNAME%"' condition="exitcodeequalto" value="0"/>		
+		-->
 		
-	    <check type='uninstall' condition='versiongreaterorequal' path='VLC media player' value='%version%' />
-	 
-		<install cmd='%COMSPEC% /c choco upgrade %PKGNAME% -y'  /> 
+		<install cmd='%COMSPEC% /c "%programdata%\chocolatey\bin\chocolatey.exe" upgrade %PKGNAMES% -y'  /> 
 		<upgrade include="install" />
-		<remove  cmd='%COMSPEC% /c choco uninstall %PKGNAME% -y'/>
+		<remove  cmd='%COMSPEC% /c "%programdata%\chocolatey\bin\chocolatey.exe" uninstall %PKGNAMES% -y'/>
 		
 		<!--
 		<install cmd='cmd /c %programdata%\chocolatey\bin\chocolatey.exe install %PKGNAME% -y'  /> 
