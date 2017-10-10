@@ -57,9 +57,9 @@
 		<check type="execute" path='chocotest.cmd "%PKGNAME%"' condition="exitcodeequalto" value="0"/>		
 		-->
 		
-		<install cmd='%COMSPEC% /c "%programdata%\chocolatey\bin\chocolatey.exe" upgrade %PKGNAMES% -y'  /> 
+		<install cmd='%COMSPEC% /c "%programdata%\chocolatey\bin\chocolatey.exe" upgrade %PKGNAMES% -y &gt;&gt;C:\ProgramData\chocolatey\logs\wpkgchocoinstall.log'  /> 
 		<upgrade include="install" />
-		<remove  cmd='%COMSPEC% /c "%programdata%\chocolatey\bin\chocolatey.exe" uninstall %PKGNAMES% -y'/>
+		<remove  cmd='%COMSPEC% /c "%programdata%\chocolatey\bin\chocolatey.exe" uninstall %PKGNAMES% -y &gt;&gt;C:\ProgramData\chocolatey\logs\wpkgchocoinstall.log'/>
 		
 		<!--
 		<install cmd='cmd /c %programdata%\chocolatey\bin\chocolatey.exe install %PKGNAME% -y'  /> 
