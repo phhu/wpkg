@@ -24,15 +24,40 @@
 		</install>		
 		
 		<install cmd='powershell "%SOFTWARE%\%installerPath%"'  /> 
-		<!--
-		<install cmd='cmd /c choco install 7zip -y'  /> 
-		<install cmd='cmd /c choco install 7zip -y - -forceX86 - -force' architecture="x64" /> 
-		-->
-		
+		 
 		<upgrade include="install" />
 
 		<remove cmd='cmd /c rmdir /s /q "%programdata%\chocolatey\"' /> 
 
   	</package>	
+	
+	<package
+        id="vlc"
+        name="VideoLAN Client (using Chocolatey)"
+        revision="1.%version%"
+        reboot="false"
+        priority="1">
+
+		<depends package-id="chocolatey" />
+		
+		<variable name="version" value="2.2.6" />
+		<variable name="PKGNAME" value="vlc" />
+		
+	    <check type='uninstall' condition='versiongreaterorequal' path='VLC media player' value='%version%' />
+	 
+		<install cmd='%COMSPEC% /c choco upgrade %PKGNAME% -y'  /> 
+		<upgrade include="install" />
+		<remove  cmd='%COMSPEC% /c choco uninstall %PKGNAME% -y'/>
+		
+		<!--
+		<install cmd='cmd /c %programdata%\chocolatey\bin\chocolatey.exe install %PKGNAME% -y'  /> 
+		<install cmd='%COMSPEC% /c choco install %PKGNAME% -y - -forceX86 - -force' architecture="x64" /> 
+		-->
+		<!-- 
+		Can be useful to pipe chocolatey output to log file: e.g. &gt;c:\temp\choc.log 
+		or see C:\ProgramData\chocolatey\logs\chocolatey.log
+		-->
+  	</package>	
+
 	
 </packages:packages>

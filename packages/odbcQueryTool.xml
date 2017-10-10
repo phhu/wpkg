@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<packages:packages xmlns:packages="http://www.wpkg.org/packages"
+	xmlns:wpkg="http://www.wpkg.org/wpkg" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.wpkg.org/packages ../xsd/packages.xsd">
+
+ 	<package
+        id=""
+        name=""
+        revision="1.%version%"
+        reboot="false"
+        priority="1">
+		
+		<variable name="version" value="1.0.0" />
+		
+		<check type="uninstall" condition="versiongreaterorequal" path="name" value="%version%" />
+		
+		<variable name="installerPath" value="name\name.%version%.Installer.exe"/>
+		<variable name="installerURL" value="https://someserver/%version%/name.%version%.Installer.exe" />
+
+		<!-- conditional download -->
+		<install cmd='"%DOWNLOADERPATH%" "%installerURL%"	"%software%\%installerPath%"  >NUL'>
+			<condition><check type="logical" condition="not"><check type="file" condition="exists" path="%SOFTWARE%\%installerPath%" /></check></condition>
+		</install>		
+		
+		<install cmd='MsiExec.exe /i"%SOFTWARE%\%installerPath%" /qn  /norestart ALLUSERS=1'  />   <!-- os=".*6\.[234]\.\d{4}" -->
+		<!-- 
+			%PROGFILES32% can be used for 32 bit program files on 32 or 64 bit OS (i.e. Program files / Program files (x86) )
+			%BITS3264% returns 32 or 64 depending on OS bitage
+			%BITS8664% returns 86 or 64 depending on OS bitage
+			%BITS_64% similarly returns nothing or 64
+			or use architecture="x64" or architecture="x86" 
+		-->
+		
+		<upgrade include="install" />
+
+		<remove cmd='WMIC product where name="NAME" call uninstall' /> 
+		<!-- <remove cmd='MsiExec.exe /X{somecode} /passive /norestart /qn' />  
+ 		     see HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall 
+		     and HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall -->
+  	</package>	
+	<package
+        id="odbcquerytool"
+        name="ODBC query tool"
+        revision="1"
+        reboot="false" 
+        priority="5">
+ 
+        <variable name="version" value="1.0.4" />
+	
+		<!--https://downloads.sourceforge.net/project/odbcquerytool/odbcquerytool/Release%202.2.1/Setup_OpenODBCQuerytool_2.2.1_64-Bits.exe?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fodbcquerytool%2Ffiles%2Fodbcquerytool%2FRelease%25202.2.1%2F&ts=1507573459&use_mirror=netix
+		<check type="uninstall" condition="versiongreaterorequal" path="OpenODBCQueryTool" value="%version%" />
+		-->
+
+		<install  cmd='msiexec /i "%SOFTWARE%\ODBCquerytool\ODBCQueryTool_1.0.4_32bits.msi" ALLUSERS=1 /qn /norestart  '></install>
+
+		<upgrade include="install" />
+		
+		<remove cmd='MsiExec.exe /X{BE619DAD-C59A-4335-ABB8-A049C7B033C2} /passive /norestart /qn' /> 	
+		
+  	</package>		
+</packages:packages>
